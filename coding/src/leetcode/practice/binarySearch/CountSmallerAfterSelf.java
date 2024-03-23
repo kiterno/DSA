@@ -6,39 +6,35 @@ import java.util.List;
 
 public class CountSmallerAfterSelf {
     public List<Integer> countSmaller(int[] nums) {
-        List<Integer> arr = new ArrayList<>();
-        List<Integer> result= new ArrayList<>();
+        int len = nums.length;
+        List<Integer> ans = new ArrayList<Integer>();
+        ArrayList<Integer> arr = new ArrayList<Integer>();
 
-        for(int i=0;i<nums.length;i++) {
-            arr.add(nums[i]);
-        }
+        for(int num: nums) arr.add(num);
 
         Collections.sort(arr);
 
-        for(int i: arr) {
-            int x = binarySearch(i, arr);
-            result.add(x);
-            arr.remove(x);
-        }
-        return result;
-    }
-
-    private int binarySearch(int i, List<Integer> arr) {
-        int low = 0, high = arr.size()-1;
-
-        while(low<=high) {
-            int mid = low + (high-low)/2;
-
-            if(arr.get(mid) == i) {
-                return mid;
-            } else if(arr.get(mid) > i) {
-                high = mid-1;
-            } else {
-                low = mid+1;
-            }
+        for(int i = 0; i<len; i++){
+            int index = binarySearch(arr,nums[i]);
+            ans.add(index);
+            arr.remove(index);
         }
 
-        return -1;
+        return ans;
     }
 
+    public int binarySearch(ArrayList<Integer> arr, int target){
+        int start = 0;
+        int end = arr.size()-1;
+        int mid=0;
+
+        while(start<=end){
+            mid = start + ((end - start)/2);
+            int val = arr.get(mid);
+            if(val<target) start = mid + 1;
+            else end = mid - 1;
+        }
+        if(arr.get(start) == target) return start;
+        return mid;
+    }
 }
